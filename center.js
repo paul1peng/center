@@ -20,8 +20,11 @@ function setup() {
       y: height / 2,
       dx: sin(r) * s,
       dy: cos(r) * s,
+      r: 255 * (i % 2),
+      g: 255 * (i % 2),
+      b: 255 * (i % 2)
       //v: 255 * (i % 2) // for contrast-y b&w (works best with even n)
-      v: i / n * 255 // for smooth b&w
+      //v: i / n * 255 // for smooth b&w
       //v: random(255) // just fuck me up!!!
     });
   }
@@ -46,7 +49,9 @@ function draw() {
       var d = dist(e1.x, e1.y, e2.x, e2.y);
       if (d <= dm) {
         stroke(
-          (e1.v + e2.v) / 2,
+          (e1.r + e2.r) / 2,
+          (e1.g + e2.g) / 2,
+          (e1.b + e2.b) / 2,
           //255, 255, // for HSB version
           ma - d / dm * ma
         );
