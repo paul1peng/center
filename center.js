@@ -34,13 +34,8 @@ function initCenter() {
     // 64 + 128 * (i % 2) // 32 + 192 * (i % 2)
     function(i) { return i / n * 255; },
     function(i) {
-      if (i < n / 2) {
-        return map(i, 0, n / 2, 255, 0);
-      } else {
-        return map (i, n/2, n, 0, 255);
-      }
+      return i < n / 2 ? map(i, 0, n / 2, 255, 0) : map(i, n / 2, n, 0, 255);
     },
-    // i < n / 2 ? map(i, 0, n / 2, 255, 0): map (i, n/2, n, 0, 255)
     // i < n / 2 ? 2 * i / n * 255 : 255 - (i - n / 2) / n * 255
     // i < n / 2 ? 2 * i / n * 255 : 255 - 2 * (i % n / 2) / n * 255
     //function(i) { return random(255); },
