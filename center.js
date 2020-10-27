@@ -10,12 +10,24 @@ function setup() {
 }
 
 function initCenter() {
-  //var rseed = floor(random(0, 128));
-  // TODO choose ird between : horiz, vert, 45s, diags, recips
-  var ird = floor(random(0, 32));
   var n = floor(random(112, 145));
   var s = 1; // random(0.1875, 0.3125); 
 
+  //var rseed = floor(random(0, 128));
+
+  // TODO choose ird between : horiz, vert, 45s, diags, recips
+  var ar = width / height;
+  var ir = random([
+    createVector(1, 1),            // sinister 45 degrees
+    createVector(1, -1),           // baroque 45 degrees
+    createVector(0, 1),            // vertical
+    createVector(1, 0),            // horizontal
+    createVector(width, height),   // sinister diagonal
+    createVector(width, -height),  // baroque diagonal
+    createVector(height, width),   // sinister reciprocal
+    createVector(height, -width)   // baroque reciprocal
+  ]).mult(random([-1, 1]))
+    .angleBetween(createVector(1, 0));
 
   /*
   var fv = random([
@@ -33,14 +45,13 @@ function initCenter() {
   ma = s * 192;
   circles = [];
 
-  var ir = TWO_PI * (ird / 32);
   for (var i = 0; i < n; i++) {
     var r = ir + i / n * TWO_PI;
     circles.push({
       x: width / 2,
       y: height / 2,
-      dx: sin(r) * s,
-      dy: cos(r) * s,
+      dx: cos(r) * s,
+      dy: sin(r) * s,
       v: i / n * 255
       //v: i / n * 255
       //r: 255 * (i % 2),
