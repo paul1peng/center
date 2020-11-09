@@ -10,12 +10,11 @@ function setup() {
 }
 
 function initCenter() {
+  /* pick number of elements and speed */
   var n = floor(random(112, 145));
-  var s = 1; // random(0.1875, 0.3125); 
+  var s = random(0.1875, 0.3125);
 
-  //var rseed = floor(random(0, 128));
-
-  // TODO choose ird between : horiz, vert, 45s, diags, recips
+  /* pick initial angle at which to point elements */
   var ar = width / height;
   var ir = random([
     createVector(1, 1),            // sinister 45 degrees
@@ -29,22 +28,38 @@ function initCenter() {
   ]).mult(random([-1, 1]))
     .angleBetween(createVector(1, 0));
 
+  /* pick function to color elements with */
+  //var nseed = floor(random(256));
+  //var nunit = random(0.15, 1);
+  //noiseSeed(nseed);
+  var minv = 32;
+  var maxv = 224;
   var fv = random([
-    //function(i) { return 255 * (i % 2); },
-    // 64 + 128 * (i % 2) // 32 + 192 * (i % 2)
-    function(i) { return i / n * 255; },
-    function(i) {
-      return i < n / 2 ? map(i, 0, n / 2, 255, 0) : map(i, n / 2, n, 0, 255);
+    function blackToWhiteToBlack(i) {
+      return i < n / 2 ? map(i, 0, n / 2, minv, maxv) :
+        map(i, n / 2, n, maxv, minv);
     },
-    // i < n / 2 ? 2 * i / n * 255 : 255 - (i - n / 2) / n * 255
-    // i < n / 2 ? 2 * i / n * 255 : 255 - 2 * (i % n / 2) / n * 255
-    //function(i) { return random(255); },
-    //function(i) { return noise(25 * i / n) * 255; }
+    function whiteToBlackToWhite(i) {
+      return i < n / 2 ? map(i, 0, n / 2, maxv, minv) :
+        map(i, n / 2, n, minv, maxv);
+    },
+    /*
+    function blackToWhite(i) {
+      return i / n * 255;
+    },
+    function fromNoise(i) {
+      return i < n / 4 ? 255 * noise(map(i, 0, n / 4, 0, nunit), 0) :
+        i < n / 2 ? 255 * noise(nunit, map(i, n / 4, n / 2, 0, nunit)) :
+        i < n * 3 / 4 ? 255 * noise(map(i, n / 2, n * 3 / 4, nunit, 0), nunit) :
+        255 * noise(map(i, n * 3 / 4, n, nunit, 0), 0);
+    }
+    */
   ]);
 
   ma = s * 192;
   circles = [];
 
+  /* generate elements in every direction from center */
   for (var i = 0; i < n; i++) {
     var r = ir + i / n * TWO_PI;
     circles.push({
@@ -53,14 +68,10 @@ function initCenter() {
       dx: cos(r) * s,
       dy: sin(r) * s,
       v: fv(i)
-      //r: 255 * (i % 2),
-      //g: 255 * (i % 2),
-      //b: 255 * (i % 2)
     });
   }
 
-  background(128); // for contrast-y b&w
-  //background(128); // for smooth b&w
+  background(128);
 }
 
 function draw() {
